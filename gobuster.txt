@@ -1,0 +1,22 @@
+===============================================================
+Gobuster v3.3
+by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
+===============================================================
+[+] Url:                     http://blogger.thm
+[+] Method:                  GET
+[+] Threads:                 10
+[+] Wordlist:                /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
+[+] Negative Status codes:   404
+[+] User Agent:              gobuster/3.3
+[+] Timeout:                 10s
+===============================================================
+2022/11/19 15:36:43 Starting gobuster in directory enumeration mode
+===============================================================
+[2K/images               (Status: 301) [Size: 311] [--> http://blogger.thm/images/]
+[2K/assets               (Status: 301) [Size: 311] [--> http://blogger.thm/assets/]
+[2K/css                  (Status: 301) [Size: 308] [--> http://blogger.thm/css/]
+[2K/js                   (Status: 301) [Size: 307] [--> http://blogger.thm/js/]
+[2K/server-status        (Status: 403) [Size: 276]
+===============================================================
+2022/11/19 15:38:35 Finished
+===============================================================
