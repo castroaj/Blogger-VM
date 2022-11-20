@@ -1,3 +1,8 @@
+Blogger VM report
+Alexander Castro
+11/20/2022
+=================
+
 1. Network scan the subset to find target machine IP address
 
  - IP FOUND: Nmap scan report for ubuntu-xenial (192.168.1.173)
@@ -34,7 +39,7 @@
 
 10. This opens up a meterpreter shell on the remote host. (Unprivledged as www-data with /bin/sh)
 
-11. From here we need to upgrade the shell, we can do this with a python
+13. From here we need to upgrade the shell, we can do this with a python
 
 	python3 -c 'import pty; pty.spawn("/bin/bash")'
 
@@ -44,23 +49,48 @@
 	ubuntu
 	vagrant
 
-13. Seeing that we have a vagrant user, we can attempt to find default credentials that come with that service. With a quick google search, we can find that vagrant/vagrant are the default credentials. We are able to switch users sucessfully with
+13. Looking into the home directory of the user james (/user/james), we can find a user.txt file. The permissions on the file are -rw------- or 600. Which means this directory is not accessible through the www-data user. It will only be accessible if we become the james user or we achieve root access.
+
+14. Seeing that we have a vagrant user, we can attempt to find default credentials that come with that service. With a quick google search, we can find that vagrant/vagrant are the default credentials. We are able to switch users sucessfully with
 
 	su vagrant
 	password: vagrant 
 
-14. From there we can view all of the sudo permissions that the vagrant has with
+15. From there we can view all of the sudo permissions that the vagrant has with
 
 	sudo -l
 
     and we can see that we have no password accesss to all commands on the system
 
-15. So if we run sudo escalation with
+16. So if we run sudo escalation with
 
 	sudo -i
 
     we will be elevated to the root user
 
+16. Now that we are reached root user, we can aquire both user.txt and the root.txt file from the home directory of the james and root user respectively.
 
+user.txt:
 
-	 
+ZmxhZ3tZMHVfRCFEXzE3IDopfQ==
+
+which is base64 encoded, so it translates to
+
+flag{Y0u_D!D_17 :)}
+
+----------
+root.txt
+
+SGV5IFRoZXJlLApNeXNlbGYgR2F1cmF2IFJhaiwgSGFja2VyLCBQcm9ncmFtbWVyICYgRnJlZUxhbmNlci4KVGhpcyBpcyBteSBmaXJzdCBhdHRlbXB0IHRvIGNyZWF0ZSBhIHJvb20uIExldCBtZSBrbm93IGlmIHlvdSBsaWtlZCBpdC4KQW55IGlzc3VlIG9yIHN1Z2dlc3Rpb25zIGZvciBtZS4gUGluZyBtZSBhdCB0d2l0dGVyCgpUd2l0dGVyOiBAdGhlaGFja2Vyc2JyYWluCkdpdGh1YjogQHRoZWhhY2tlcnNicmFpbgpJbnN0YWdyYW06IEB0aGVoYWNrZXJzYnJhaW4KQmxvZzogaHR0cHM6Ly90aGVoYWNrZXJzYnJhaW4ucHl0aG9uYW55d2hlcmUuY29tCgoKSGVyZSdzIFlvdXIgRmxhZy4KZmxhZ3tXMzExX0QwbjNfWTB1X1AzbjN0cjR0M2RfTTMgOil9Cg==
+
+which is base64 encoded (known due to the == at the end) so we can translate it to ...
+
+Hey There,
+Myself Gaurav Raj, Hacker, Programmer & FreeLancer.
+This is my first attempt to create a room. Let me know if you liked it.
+Any issue or suggestions for me. Ping me at twitter
+
+Twitter: @thehackersbrain
+Github: @thehackersbrain
+Instagram: @thehackersbrain
+Blog: https://thehackersbrain.pythonanywhere.com
